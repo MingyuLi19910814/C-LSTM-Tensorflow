@@ -14,8 +14,10 @@ def get_clstm(seq_len,
               refine,
               google_vocabulary):
     vocab_dim = word2idx.__len__() + 1
+    # initialized the embedding matrix with [-0.25, 0.25] uniform random as described in paper
     embedding_matrix = np.random.uniform(-0.25, 0.25, size=(vocab_dim, embedding_dim))
     cnt_word_not_in_vocab = 0
+    # replace the embedding weight of the words that could be found within google-news-300
     for word, i in word2idx.items():
         if word in google_vocabulary:
             embedding_matrix[i] = google_vocabulary[word]
@@ -57,9 +59,5 @@ def get_clstm(seq_len,
                                     activation='softmax',
                                     kernel_regularizer=tf.keras.regularizers.l2(l2_reg_lambda),
                                     bias_regularizer=tf.keras.regularizers.l2(l2_reg_lambda))(final_state)
-    # outputs = tf.keras.layers.Dense(1,
-    #                                 activation='sigmoid',
-    #                                 kernel_regularizer=tf.keras.regularizers.l2(l2_reg_lambda),
-    #                                 bias_regularizer=tf.keras.regularizers.l2(l2_reg_lambda))(final_state)
     model = tf.keras.Model(inputs, outputs)
     return model

@@ -1,4 +1,46 @@
-SST-2: https://github.com/clairett/pytorch-sentiment-classification
-SST-5: https://github.com/prrao87/fine-grained-sentiment
-Paper : https://nlp.stanford.edu/~socherr/EMNLP2013_RNTN.pdf
-google news 300: https://drive.google.com/file/d/0B7XkCwpI5KDYNlNUTTlSS21pQmM/edit?resourcekey=0-wjGZdNAUop6WykTtMip30g
+# Introduction
+
+This repository implements the [C-LSTM](https://arxiv.org/pdf/1511.08630v2.pdf)
+for text classification(SST-2) in Tensorflow2 and tested on binary classification and
+5-class classification (SST-5) on [Stanford Sentiment Treebank](https://nlp.stanford.edu/sentiment/) dataset.
+
+# Contribution
+1. Implement with Tensorflow2 and Python3
+2. Use pretrained Google-News-300 weights on the Embedding layer
+3. Achieved performance very close to the original paper on SST dataset
+
+# Install
+```commandline
+conda env create -f environment.yml
+conda activate tensorflow
+```
+
+# Train
+
+The SST-2 dataset is from [clairett](https://github.com/clairett/pytorch-sentiment-classification).  
+The SST-5 dataset is from [prrao87](https://github.com/prrao87/fine-grained-sentiment)
+
+## Binary Classification
+```commandline
+python train.py --batch_size 128\
+                --num_epochs 80\
+                --num_class 2\
+                --max_len 48\
+                --learning_rate 1e-4\
+```
+
+## 5-class classification
+```commandline
+python train.py --batch_size 128\
+                --num_epochs 80\
+                --num_class 5\
+                --max_len 48\
+                --learning_rate 1e-4\
+```
+
+# Result
+
+| Dataset | Accuracy of this implementation | Accuracy of original paper |  
+|---------|---------------------------------|---------------------------|
+| SST-2   | 85.6%                           | 87.8%                           |
+| SST-5   | 48.7%                           | 49.2%                           |
