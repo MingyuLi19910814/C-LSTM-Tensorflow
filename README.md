@@ -17,9 +17,6 @@ conda activate tensorflow
 
 # Train
 
-The SST-2 dataset is from [clairett](https://github.com/clairett/pytorch-sentiment-classification).  
-The SST-5 dataset is from [prrao87](https://github.com/prrao87/fine-grained-sentiment)
-
 ## Binary Classification
 ```commandline
 python train.py --dataset SST-2\
@@ -46,3 +43,8 @@ python train.py --dataset SST-5\
 |---------|---------------------------------|---------------------------|
 | SST-2   | 86.5%                           | 87.8%                           |
 | SST-5   | 48.6%                           | 49.2%                           |
+
+# Acknowledgement
+* The SST-2 dataset is from [clairett](https://github.com/clairett/pytorch-sentiment-classification).  
+* The SST-5 dataset is from [prrao87](https://github.com/prrao87/fine-grained-sentiment)
+
