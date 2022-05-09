@@ -11,7 +11,6 @@ def get_clstm(seq_len,
               lstm_num_layers,
               num_class,
               l2_reg_lambda,
-              refine,
               google_vocabulary):
     vocab_dim = word2idx.__len__() + 1
     # initialized the embedding matrix with [-0.25, 0.25] uniform random as described in paper
@@ -32,7 +31,7 @@ def get_clstm(seq_len,
                                   output_dim=embedding_dim,
                                   weights=[embedding_matrix],
                                   input_length=seq_len,
-                                  name='embedding_layer', trainable=refine)(inputs)
+                                  name='embedding_layer', trainable=False)(inputs)
     # (-1, max_len, embedding_dim, 1)
     x = tf.expand_dims(x, axis=-1)
     # (-1, max_len, embedding_dim, 1)

@@ -23,22 +23,22 @@ parser.add_argument('--learning_rate', type=float, default=1e-4, help='Learning 
 parser.add_argument('--l2_reg_lambda', type=float, default=1e-3, help='L2 regularization lambda')
 parser.add_argument('--refine', action='store_true')
 
-
 def train(args):
     for device in tf.config.list_physical_devices('GPU'):
         tf.config.experimental.set_memory_growth(device, True)
-    print('loading google news 300 word2vec')
-    google_vocabulary = downloader.load('word2vec-google-news-300')
-    print('     Done')
     if args.dataset == 'SST-5':
         (train_x, train_y), (val_x, val_y), (test_x, test_y), tokenizer = load_sst5_data(SST5_DATA_DIR, args.max_len)
     elif args.dataset == 'SST-2':
         (train_x, train_y), (val_x, val_y), (test_x, test_y), tokenizer = load_sst2_data(SST2_DATA_DIR, args.max_len)
     else:
         raise NotImplementedError("custom dataset is not implemented yet")
+    print('tokenizer shape = {}'.format(tokenizer.word_index.__len__()))
     # save the tokenizer to file so that it could be used for inference
     with open(TOKENIZER_PATH, 'wb') as f:
         pickle.dump(tokenizer, f)
+    print('loading google news 300 word2vec')
+    google_vocabulary = downloader.load('word2vec-google-news-300')
+    print('     Done')
     # generate the C-LSTM model with one convolutional layer and one LSTM layer as described in the paper
     model = get_clstm(seq_len=args.max_len,
                       word2idx=tokenizer.word_index,
@@ -50,15 +50,13 @@ def train(args):
                       lstm_num_layers=args.num_layers,
                       num_class=args.num_class,
                       l2_reg_lambda=args.l2_reg_lambda,
-                      refine=args.refine,
-                      google_vocabulary=google_vocabulary
-                      )
+                      google_vocabulary=google_vocabulary)
 
     ckpt_path = os.path.join(SAVED_MODEL_DIR, 'best_model.ckpt')
-    if args.refine:
-        model.load_weights(ckpt_path)
     # callback for saving the best model
-    save_callback = tf.keras.callbacks.ModelCheckpoint(ckpt_path, save_weights_only=True, save_best_only=True)
+    save_callback = tf.keras.callbacks.ModelCheckpoint(ckpt_path,
+                                                       save_weights_only=True,
+                                                       save_best_only=True)
     # the paper only mentioned to use SGD with RMS.
     model.compile(optimizer=tf.keras.optimizers.RMSprop(learning_rate=args.learning_rate),
                   loss=tf.keras.losses.SparseCategoricalCrossentropy(),

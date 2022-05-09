@@ -23,10 +23,10 @@ The SST-5 dataset is from [prrao87](https://github.com/prrao87/fine-grained-sent
 ## Binary Classification
 ```commandline
 python train.py --dataset SST-2\
-                --batch_size 16\
+                --batch_size 48\
                 --num_epochs 80\
                 --num_class 2\
-                --max_len 40\
+                --max_len 48\
                 --learning_rate 1e-4
 ```
 
@@ -44,5 +44,5 @@ python train.py --dataset SST-5\
 
 | Dataset | Accuracy of this implementation | Accuracy of original paper |  
 |---------|---------------------------------|---------------------------|
-| SST-2   | 86.2%                           | 87.8%                           |
+| SST-2   | 86.5%                           | 87.8%                           |
 | SST-5   | 48.6%                           | 49.2%                           |
