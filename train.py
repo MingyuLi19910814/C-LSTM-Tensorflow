@@ -21,7 +21,6 @@ parser.add_argument('--num_layers', type=int, default=1, help='Number of the LST
 parser.add_argument('--keep_prob', type=float, default=0.5, help='Dropout keep probability')
 parser.add_argument('--learning_rate', type=float, default=1e-4, help='Learning rate')
 parser.add_argument('--l2_reg_lambda', type=float, default=1e-3, help='L2 regularization lambda')
-parser.add_argument('--refine', action='store_true')
 
 def train(args):
     for device in tf.config.list_physical_devices('GPU'):
